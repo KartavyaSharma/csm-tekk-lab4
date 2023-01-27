@@ -1,9 +1,11 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.schemas.coreapi import serializers
 
-from backend.models import User, Section, Student
+from backend.models import User, Section, Student, Attendances
 from backend.serializers import (
+    AttendancesSerializer,
     UserSerializer,
     StudentSerializer,
     MentorSerializer,
@@ -66,3 +68,17 @@ def student_details(request, student_id):
         student = Student.objects.get(id=student_id)
         serializer = StudentSerializer(student)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET", "POST"])
+def student_attendances(request, student_id):
+    """
+    GET: return a list of attendance objects for student
+    POST: update attendance object with new one based on id
+    """
+    attendances = Attendances.objects.filter(student__id=student_id)
+    if request.method == "GET":
+        serializer = AttendancesSerializer(attendances)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "POST":
+        pass

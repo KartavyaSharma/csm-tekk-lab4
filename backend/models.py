@@ -29,3 +29,9 @@ class Section(models.Model):
 
 class Course(models.Model):
     name = models.CharField(max_length=20)
+
+
+class Attendances(models.Model):
+    date = models.DateField()
+    status = models.CharField(max_length=10)
+    student = models.ForeignKey("Student", on_delete=models.CASCADE)

@@ -20,4 +20,7 @@ urlpatterns = [
         views.student_details,
         name="student-details",
     ),
+    # path(
+    #     "students/<int:student_id>/attendances/",
+    # )
 ]
