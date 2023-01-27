@@ -20,7 +20,9 @@ urlpatterns = [
         views.student_details,
         name="student-details",
     ),
-    # path(
-    #     "students/<int:student_id>/attendances/",
-    # )
+    path(
+        "students/<int:student_id>/attendances/",
+        views.student_attendance,
+        name="student-attendances"
+    )
 ]

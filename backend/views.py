@@ -3,9 +3,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.schemas.coreapi import serializers
 
-from backend.models import User, Section, Student, Attendances
+from backend.models import User, Section, Student, Attendance
 from backend.serializers import (
-    AttendancesSerializer,
+    AttendanceSerializer,
     UserSerializer,
     StudentSerializer,
     MentorSerializer,
@@ -71,14 +71,17 @@ def student_details(request, student_id):
 
 
 @api_view(["GET", "POST"])
-def student_attendances(request, student_id):
+def student_attendance(request, student_id):
     """
     GET: return a list of attendance objects for student
     POST: update attendance object with new one based on id
     """
-    attendances = Attendances.objects.filter(student__id=student_id)
+    attendances = Attendance.objects.filter(student__id=student_id)
     if request.method == "GET":
-        serializer = AttendancesSerializer(attendances)
+        serializer = AttendanceSerializer(attendances, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
-        pass
+        target_attendance = attendances.filter(date=request.data.get("date"))
+        target_attendance.status = request.data.get("presence")
+        target_attendance.save()
+        return Response(status=status.HTTP_201_CREATED)
