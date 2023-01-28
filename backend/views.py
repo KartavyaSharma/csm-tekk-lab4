@@ -73,15 +73,30 @@ def student_details(request, student_id):
 @api_view(["GET", "POST"])
 def student_attendance(request, student_id):
     """
-    GET: return a list of attendance objects for student
-    POST: update attendance object with new one based on id
+    GET: Return a list of attendance objects for student
+    POST: Update associated attendance object with new fields.
     """
     attendances = Attendance.objects.filter(student__id=student_id)
     if request.method == "GET":
         serializer = AttendanceSerializer(attendances, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
-        target_attendance = attendances.filter(date=request.data.get("date"))
-        target_attendance.status = request.data.get("presence")
+        target_attendance = attendances.get(date=request.data.get("date"))
+        target_attendance.presence = request.data.get("presence")
         target_attendance.save()
-        return Response(status=status.HTTP_201_CREATED)
+        serializer = AttendanceSerializer(target_attendance)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(["DELETE"])
+def student_drop(request, student_id):
+    """
+    DELETE: Change student `active` status to false.
+    """
+    if request.method == "DELETE":
+        student = Student.objects.get(id=student_id)
+        student.active = False
+        student.save()
+        serializer = StudentSerializer(student)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+

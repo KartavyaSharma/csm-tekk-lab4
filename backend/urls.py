@@ -24,5 +24,10 @@ urlpatterns = [
         "students/<int:student_id>/attendances/",
         views.student_attendance,
         name="student-attendances"
+    ),
+    path(
+        "students/<int:student_id>/drop",
+        views.student_drop,
+        name="student-drop"
     )
 ]
