@@ -27,7 +27,7 @@ export const Section = () => {
       copy.splice(index, 1);
     }
 
-    fetch(`/api/students/${student_id}/drop/`, {
+    fetch(`/api/students/${id}/drop/`, {
       method: "PATCH",
     });
 

@@ -30,7 +30,7 @@ export const Student = ({}: StudentProps) => {
 
   const selectStatus = (change: React.ChangeEvent<HTMLSelectElement>, date: String, id: number) => {
     const copy = [...attendances];
-    copy.find((attendance) => attendance.date === date).status = change.target.value;
+    copy.find((attendance) => attendance.date == date).presence = change.target.value;
     setAttendances(copy);
 
     fetch(`/api/students/${id}/attendances/`, {
@@ -62,7 +62,7 @@ export const Student = ({}: StudentProps) => {
               <li key={attendance.id}>
               {attendance.date}:{" "}
               <select
-                defaultValue={attendance.status}
+                defaultValue={attendance.presence}
                 onChange={(change) => selectStatus(change, attendance.date, attendance.id)}>
                 <option value="PR">Present</option>
                 <option value="EX">Excused Absence</option>

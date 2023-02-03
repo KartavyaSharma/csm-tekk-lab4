@@ -36,5 +36,5 @@ export interface Student {
 export interface Attendance {
   id: number;
   date: String;
-  status: String;
+  presence: String;
 }
