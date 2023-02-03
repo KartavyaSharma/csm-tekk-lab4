@@ -20,6 +20,19 @@ export const Section = () => {
       });
   }, []);
 
+  const drop = (id:number) => {
+    const copy = [...students];
+    const index = copy.map(e => e.id).indexOf(id, 0);
+    if (index > -1) {
+      copy.splice(index, 1);
+    }
+
+    fetch(`/api/students/${student_id}/drop/`, {
+      method: "PATCH",
+    });
+
+  };
+
   return (
     <div>
       <h1>Section</h1>
@@ -38,6 +51,7 @@ export const Section = () => {
       <ul>
         {students.map((student) => (
           <li key={student.id}>
+            <button onClick={() => drop(student.id)}>Drop</button>{" "}
             <Link to={`/students/${student.id}`}>
               {student.user.first_name} {student.user.last_name} (id:{" "}
               {student.id})
